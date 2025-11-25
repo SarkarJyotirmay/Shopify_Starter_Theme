@@ -1,0 +1,294 @@
+{% comment %} 
+  Simple Featured Collection section for Shopify Online Store 2.0 
+  - Uses style tags (no inline styles) 
+  - Avoids shallow DOM 
+  - Includes settings in schema for collection, limit, columns, and simple toggles 
+  - Place this file in sections/featured-collection.liquid 
+{% endcomment %}
+
+<style>
+  /* Featured Collection — styles inside a <style> tag (no inline CSS) */
+  .fc-section {
+    padding: 48px 24px;
+    background-color: var(--color-bg, #ffffff);
+    color: var(--color-text, #111111);
+    font-family: -apple-system
+    , BlinkMacSystemFont
+    , "Segoe UI"
+    , Roboto
+    , "Helvetica Neue"
+    , Arial;
+  }
+
+  .fc-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 24px;
+  }
+
+  .fc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .fc-title {
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .fc-subtitle {
+    margin: 0;
+    font-size: 0.95rem;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .fc-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--fc-columns, 4), 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+
+  .fc-card {
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    overflow: hidden;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 160ms ease
+    , transform 160ms ease;
+  }
+
+  .fc-card:focus-within,
+  .fc-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    transform: translateY(-4px);
+  }
+
+  .fc-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+  }
+
+  .fc-body {
+    padding: 12px 14px;
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+  }
+
+  .fc-product-title {
+    font-size: 1rem;
+    margin: 0 0 6px;
+    line-height: 1.2;
+  }
+
+  .fc-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: auto;
+  }
+
+  .fc-price {
+    font-weight: 600;
+  }
+
+  .fc-old-price {
+    text-decoration: line-through;
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 0.9rem;
+  }
+
+  .fc-button {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background 140ms ease;
+  }
+
+  .fc-button:focus,
+  .fc-button:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    :root {
+      --fc-columns: 3;
+    }
+  }
+  @media (max-width: 768px) {
+    :root {
+      --fc-columns: 2;
+    }
+    .fc-section {
+      padding: 32px 16px;
+    }
+  }
+  @media (max-width: 420px) {
+    :root {
+      --fc-columns: 1;
+    }
+    .fc-title {
+      font-size: 1.25rem;
+    }
+  }
+</style>
+
+
+<section
+  id="FeaturedCollection-{{ section.id }}"
+  class="fc-section"
+  aria-labelledby="fc-heading-{{ section.id }}"
+  >
+
+  <div class="fc-inner">
+    <header class="fc-header">
+      <div>
+        <h2 id="fc-heading-{{ section.id }}" class="fc-title">{{ section.settings.heading }}</h2>
+        {% if section.settings.subheading != blank %}
+          <p class="fc-subtitle">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+
+      {% if section.settings.view_all_link != blank %}
+        <div class="fc-actions">
+          <a
+            href="{{ section.settings.view_all_link }}"
+            class="fc-button"
+            aria-label="View all {{ section.settings.heading }}">View all</a>
+        </div>
+      {% endif %}
+    </header>
+
+    {% assign featured_collection = collections[section.settings.collection] %}
+
+    {% if featured_collection and featured_collection.products_count != blank %}
+      <div class="fc-grid" role="list">
+        {% assign limit = section.settings.limit | default: 8 %}
+        {% for product in featured_collection.products limit: section.settings.limit %}
+          <article
+            class="fc-card"
+            role="listitem"
+            aria-labelledby="fc-product-title-{{ product.id }}">
+            <a
+              href="{{ product.url }}"
+              class="fc-media"
+              aria-hidden="true">
+              {% if product.featured_image %}
+                <img
+                  src="{{ product.featured_image | img_url: 'master' }}"
+                  alt="{{ product.featured_image.alt | escape }}"
+                  class="fc-image"
+                  loading="lazy" />
+              {% else %}
+                <div class="fc-image" aria-hidden="true"></div>
+              {% endif %}
+            </a>
+
+            <div class="fc-body">
+              <h3 id="fc-product-title-{{ product.id }}" class="fc-product-title">
+                <a href="{{ product.url }}">{{ product.title }}</a>
+              </h3>
+
+              {% if section.settings.show_vendor and product.vendor != blank %}
+                <div class="fc-subtitle">{{ product.vendor }}</div>
+              {% endif %}
+
+              <div class="fc-price-row">
+                <div class="fc-price">{{ product.price | money }}</div>
+                {% if product.compare_at_price > product.price %}
+                  <div class="fc-old-price">{{ product.compare_at_price | money }}</div>
+                {% endif %}
+
+                {% if section.settings.show_add_to_cart %}
+                  <form
+                    method="post"
+                    action="/cart/add"
+                    class="fc-add-form"
+                    novalidate>
+                    <input
+                      type="hidden"
+                      name="id"
+                      value="{{ product.variants.first.id }}">
+                    <button
+                      type="submit"
+                      class="fc-button"
+                      aria-label="Add {{ product.title }} to cart">Add</button>
+                  </form>
+                {% endif %}
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No products found in the chosen collection.</p>
+    {% endif %}
+  </div>
+
+</section>
+
+{% schema %}
+  {
+    "name": "Featured collection",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Featured collection"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "Hand-picked products"
+      },
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "Collection"
+      },
+      {
+        "type": "number",
+        "id": "limit",
+        "label": "Number of products to show",
+        "default": 8
+      }, {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show vendor",
+        "default": false
+      }, {
+        "type": "checkbox",
+        "id": "show_add_to_cart",
+        "label": "Show add to cart",
+        "default": true
+      }, {
+        "type": "url",
+        "id": "view_all_link",
+        "label": "View all link (optional)"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured collection",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}

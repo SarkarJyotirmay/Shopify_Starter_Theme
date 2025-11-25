@@ -1,0 +1,290 @@
+<!-- Featured Collection -->
+<section class="fc-section" aria-labelledby="fc-heading">
+  <div class="fc-inner">
+    <header class="fc-header">
+      <h2 id="fc-heading">{{section.settings.text-test}}</h2>
+      <p class="fc-sub">Hand-picked items — new arrivals and customer favorites.</p>
+      <a class="fc-cta" href="#shop-all" aria-label="Shop all featured items">Shop all</a>
+    </header>
+
+    <ul class="fc-grid" role="list">
+      <!-- Product card (repeat for each product) -->
+      <li class="fc-card" role="listitem">
+        <div class="fc-media">
+          <img src="https://placehold.co/600x600" alt="Product name 1">
+          <span class="fc-badge">New</span>
+        </div>
+
+        <div class="fc-content">
+          <h3 class="fc-title">Product name 1</h3>
+          <p class="fc-meta">Short description or variant</p>
+          <div class="fc-bottom">
+            <div class="fc-price">
+              <span class="price">₹1,299</span>
+              <span class="compare">₹1,999</span>
+            </div>
+            <button class="fc-add" aria-label="Add Product name 1 to cart">Add</button>
+          </div>
+        </div>
+      </li>
+
+      <li class="fc-card" role="listitem">
+        <div class="fc-media">
+          <img src="https://placehold.co/600x600" alt="Product name 2">
+        </div>
+        <div class="fc-content">
+          <h3 class="fc-title">Product name 2</h3>
+          <p class="fc-meta">Lightweight, breathable</p>
+          <div class="fc-bottom">
+            <div class="fc-price">
+              <span class="price">₹899</span>
+            </div>
+            <button class="fc-add" aria-label="Add Product name 2 to cart">Add</button>
+          </div>
+        </div>
+      </li>
+
+      <li class="fc-card" role="listitem">
+        <div class="fc-media">
+          <img src="https://placehold.co/600x600" alt="Product name 3">
+          <span class="fc-badge fc-badge-sale">-20%</span>
+        </div>
+        <div class="fc-content">
+          <h3 class="fc-title">Product name 3</h3>
+          <p class="fc-meta">Limited edition</p>
+          <div class="fc-bottom">
+            <div class="fc-price">
+              <span class="price">₹1,199</span>
+              <span class="compare">₹1,499</span>
+            </div>
+            <button class="fc-add" aria-label="Add Product name 3 to cart">Add</button>
+          </div>
+        </div>
+      </li>
+
+      <li class="fc-card" role="listitem">
+        <div class="fc-media">
+          <img src="https://placehold.co/600x600" alt="Product name 4">
+        </div>
+        <div class="fc-content">
+          <h3 class="fc-title">Product name 4</h3>
+          <p class="fc-meta">Bestseller</p>
+          <div class="fc-bottom">
+            <div class="fc-price">
+              <span class="price">₹2,499</span>
+            </div>
+            <button class="fc-add" aria-label="Add Product name 4 to cart">Add</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+    :root{
+    --fc-max-width: 1200px;
+    --fc-gap: 1rem;
+    --fc-radius: 12px;
+    --fc-bg: #ffffff;
+    --fc-ink: #111827;
+    --fc-muted: #6b7280;
+    --accent: #0b74de;
+    --accent-contrast: #fff;
+    --card-shadow: 0 6px 18px rgba(13, 14, 22, 0.06);
+    }
+
+    *{box-sizing:border-box}
+    .fc-section{
+    padding: 2.25rem 1rem;
+    background: linear-gradient(180deg,#f8fafc 0,#fff 100%);
+    color:var(--fc-ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    .fc-inner{
+    max-width: var(--fc-max-width);
+    margin: 0 auto;
+    }
+    .fc-header{
+    display:flex;
+    gap:1rem;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:1.25rem;
+    }
+    .fc-header h2{
+    margin:0;
+    font-size:1.5rem;
+    line-height:1.1;
+    }
+    .fc-sub{
+    margin:0;
+    color:var(--fc-muted);
+    font-size:0.95rem;
+    flex:1;
+    margin-left:1rem;
+    }
+    .fc-cta{
+    background:transparent;
+    border:1px solid var(--accent);
+    color:var(--accent);
+    padding:0.5rem 0.75rem;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:600;
+    white-space:nowrap;
+    }
+
+    .fc-grid{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:grid;
+    gap:var(--fc-gap);
+    /* responsive columns */
+    grid-template-columns: repeat(1, 1fr);
+    }
+
+    /* Breakpoints */
+    @media (min-width:560px){
+    .fc-grid{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width:900px){
+    .fc-grid{ grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (min-width:1100px){
+    .fc-grid{ grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* Card */
+    .fc-card{
+    background:var(--fc-bg);
+    border-radius:var(--fc-radius);
+    overflow:hidden;
+    box-shadow: var(--card-shadow);
+    display:flex;
+    flex-direction:column;
+    transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .fc-card:focus-within,
+    .fc-card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 14px 30px rgba(12,13,22,0.09);
+    }
+
+    /* Media (image) - preserve square aspect */
+    .fc-media{
+    position:relative;
+    width:100%;
+    padding-top:100%; /* 1:1 aspect ratio */
+    overflow:hidden;
+    }
+    .fc-media img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition: transform .35s ease;
+    }
+    .fc-card:hover .fc-media img{
+    transform: scale(1.03);
+    }
+
+    .fc-badge{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:var(--accent);
+    color:var(--accent-contrast);
+    font-size:0.75rem;
+    padding:0.25rem 0.5rem;
+    border-radius:8px;
+    font-weight:700;
+    box-shadow:0 4px 10px rgba(11,116,222,0.12);
+    }
+    .fc-badge-sale{
+    background: #ef4444;
+    box-shadow:0 4px 10px rgba(239,68,68,0.12);
+    }
+
+    /* Content */
+    .fc-content{
+    padding:0.9rem 1rem;
+    display:flex;
+    flex-direction:column;
+    gap:0.5rem;
+    min-height:120px;
+    }
+    .fc-title{
+    margin:0;
+    font-size:1rem;
+    line-height:1.2;
+    font-weight:600;
+    }
+    .fc-meta{
+    margin:0;
+    color:var(--fc-muted);
+    font-size:0.875rem;
+    }
+
+    /* bottom row: price + add button */
+    .fc-bottom{
+    margin-top:auto;
+    display:flex;
+    gap:0.5rem;
+    align-items:center;
+    justify-content:space-between;
+    }
+    .fc-price .price{
+    font-weight:700;
+    font-size:1.05rem;
+    }
+    .fc-price .compare{
+    margin-left:0.5rem;
+    color:var(--fc-muted);
+    text-decoration:line-through;
+    font-size:0.9rem;
+    }
+
+    /* Add button */
+    .fc-add{
+    border:0;
+    background:var(--accent);
+    color:var(--accent-contrast);
+    font-weight:600;
+    padding:0.45rem 0.6rem;
+    border-radius:10px;
+    cursor:pointer;
+    transition: transform .12s ease, opacity .12s ease;
+    }
+    .fc-add:active{ transform: translateY(1px); }
+    .fc-add:focus{ outline:3px solid rgba(11,116,222,0.15); outline-offset:2px; }
+
+    /* small screens - tighter */
+    @media (max-width:420px){
+    .fc-header{ flex-direction:column; align-items:flex-start; gap:0.5rem; }
+    .fc-sub{ margin-left:0; }
+    }
+
+</style>
+
+{% schema %}
+{
+    "name": "Featured Collection Test",
+    "settings": [
+        {
+            "type": "text",
+            "id": "text-test",
+            "label": "test Text",
+            "default": "Featured Collection Test Section"
+        }
+        ],
+        "presets": [
+            {
+                "name": "test-text"
+            }
+        ]
+}
+{% endschema %}
