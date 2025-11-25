@@ -1,11 +1,45 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-    "sections": {
-        "heading": {
-            "type": "heading",
-            "settings": {}
-        }
+  "sections": {
+    "heading": {
+      "type": "heading",
+      "settings": {
+        "text": "Hello World!"
+      }
     },
-    "order": [
-        "heading"
-    ]
+    "featured_collection_W8Hn39": {
+      "type": "featured-collection",
+      "name": "Featured collection",
+      "settings": {
+        "heading": "My Featured collection -dynamic",
+        "subheading": "My Hand-picked products",
+        "collection": "",
+        "limit": 8,
+        "show_vendor": false,
+        "show_add_to_cart": true,
+        "view_all_link": ""
+      }
+    },
+    "featured_collection_test_3GVPdH": {
+      "type": "featured-collection-test",
+      "name": "Featured Collection Test",
+      "settings": {
+        "heading": "Featured Collection Test Section",
+        "featured_collection": "cars"
+      }
+    }
+  },
+  "order": [
+    "heading",
+    "featured_collection_W8Hn39",
+    "featured_collection_test_3GVPdH"
+  ]
 }
