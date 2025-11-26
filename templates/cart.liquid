@@ -1,0 +1,165 @@
+<section class="simple-cart">
+  <h1>Your Cart</h1>
+
+  {% if cart.items.size > 0 %}
+    <ul class="cart-list">
+      {% for item in cart.items %}
+        <li class="cart-item">
+          <img src="{{ item.image |  image_url: width: 200  }}" alt="{{ item.title }}">
+
+          <div class="cart-info">
+            <h2 class="item-title">{{ item.product_title }}</h2>
+            {% if item.variant_title %}
+              <p class="variant">Variant: {{ item.variant_title }}</p>
+            {% endif %}
+
+            <p class="price">{{ item.final_price | money }}</p>
+
+            <div class="qty-controls">
+              <button
+                class="qty-btn"
+                data-id="{{ item.key }}"
+                data-change="-1">-</button>
+              {% comment %} <span class="qty">{{ item.quantity }}</span> {% endcomment %}
+               <input type="number" class="qty" value="{{ item.quantity }}" min="1"  />
+              <button
+                class="qty-btn"
+                data-id="{{ item.key }}"
+                data-change="1">+</button>
+            </div>
+
+            <button class="remove-btn" data-id="{{ item.key }}">Remove</button>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="cart-footer">
+      <p class="subtotal">
+        Subtotal:
+        <strong>{{ cart.total_price | money }}</strong>
+      </p>
+      <a href="/checkout" class="checkout-btn">Checkout</a>
+    </div>
+
+  {% else %}
+    <p>Your cart is empty.</p>
+    <a href="/">Go back to shopping</a>
+  {% endif %}
+</section>
+
+
+<style>
+  .simple-cart {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 10px;
+    font-family: sans-serif;
+  }
+
+  .cart-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .cart-item {
+    display: flex;
+    gap: 20px;
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .cart-item img {
+    width: 140px;
+    border-radius: 8px;
+  }
+
+  .cart-info {
+    flex: 1;
+  }
+
+  .item-title {
+    margin: 0 0 5px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .variant {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .price {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 10px 0;
+  }
+
+  .qty-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .qty-btn {
+    width: 28px;
+    height: 28px;
+    background: #eee;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+
+  .remove-btn {
+    margin-top: 6px;
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+  }
+
+  .cart-footer {
+    margin-top: 20px;
+    padding: 10px 0;
+    text-align: right;
+  }
+
+  .checkout-btn {
+    display: inline-block;
+    background: #000;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 5px;
+  }
+</style>
+
+<script>
+    
+    document.querySelectorAll(".qty-btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+        const key = this.dataset.id;
+        const change = Number(this.dataset.change);
+  
+        fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: key, quantity: change })
+        })
+        .then(() => location.reload());
+    });
+    });
+  
+    document.querySelectorAll(".remove-btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+        const key = this.dataset.id;
+  
+        fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: key, quantity: 0 })
+        })
+        .then(() => location.reload());
+    });
+    });
+</script>

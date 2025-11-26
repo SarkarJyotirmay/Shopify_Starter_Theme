@@ -1,0 +1,206 @@
+{{ 'splide.min.js' | asset_url | script_tag }}
+
+<script src="{{"splide.min.js" |  asset_url}}" defer></script>
+
+<div class="product-page">
+  <!-- Left: Image Gallery -->
+  <div class="gallery">
+    <div class="main-image">
+      <img
+        id="mainImg"
+        src="{{product.featured_image |  image_url: width: 400}}"
+        alt="Product Image">
+    </div>
+
+    <div class="thumbnails">
+      {% for media in product.media %}
+        <img src="{{media.preview_image |  image_url: width: 100 }}" onclick="switchImg(this)">
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Right: Product Details -->
+  <div class="product-info">
+    <h1 class="product-title">{{ product.title }}</h1>
+    <p class="product-price">{{ product.price | money }}</p>
+    {% if product.description != blank %}
+      <p>{{ product.description }}</p>
+    {% endif %}
+
+  {% comment %} cart from {% endcomment %}
+    <div class="product-form">
+      {% form 'product', product %}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <input type="number" name="quantity" min="1" value="1" />
+          <input type="submit" value="Add to cart" />
+          {{ form | payment_button }}
+      {% endform %}
+    </div>
+
+  </div>
+</div>
+
+
+<style>
+  body {
+    font-family: Arial
+    , sans-serif;
+    margin: 40px;
+    background-color: #fafafa;
+  }
+
+  /* Layout */
+  .product-page {
+    display: flex;
+    gap: 40px;
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .gallery {
+    flex: 1;
+  }
+
+  .main-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .thumbnails {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+  }
+
+  .thumbnails img {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    cursor: pointer;
+    object-fit: cover;
+    transition: 0.3s;
+    border: 2px solid transparent;
+  }
+
+  .thumbnails img:hover {
+    border-color: #000;
+  }
+
+  /* Product Info */
+  .product-info {
+    flex: 1;
+    padding: 20px;
+  }
+
+  .product-title {
+    font-size: 32px;
+    margin: 0 0 10px;
+  }
+
+  .product-price {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .add-to-cart {
+    padding: 14px 22px;
+    font-size: 18px;
+    border: none;
+    background: black;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .add-to-cart:hover {
+    background: #333;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .product-page {
+      flex-direction: column;
+    }
+  }
+
+
+  /* cart form */
+
+  /* Product form wrapper */
+  .product-form {
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+    font-family: inherit;
+  }
+
+  /* Quantity input */
+  .product-form input[type="number"] {
+    width: 100px;
+    padding: 12px 14px;
+    font-size: 16px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    background: #fafafa;
+    transition: border-color 0.2s ease;
+  }
+
+  .product-form input[type="number"]:focus {
+    border-color: #000;
+    outline: none;
+  }
+
+  /* Add to cart button */
+  .product-form input[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    font-size: 17px;
+    font-weight: 600;
+    text-align: center;
+    background: #111;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+  }
+
+  .product-form input[type="submit"]:hover {
+    background: #333;
+  }
+
+  .product-form input[type="submit"]:active {
+    transform: scale(0.98);
+  }
+
+  /* Shopify dynamic payment button styling */
+  .product-form .shopify-payment-button {
+    margin-top: 4px;
+  }
+
+  .product-form .shopify-payment-button__button {
+    border-radius: 6px !important;
+    padding: 14px !important;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .product-form .shopify-payment-button__more-options {
+    display: none !important; /* optional: hides extra link */
+  }
+
+</style>
+
+<script>
+  function switchImg(el) {
+    console.log('====================================');
+    console.log({{product.variants | json}});
+    console.log('====================================');
+    document.getElementById('mainImg').src = el.src.replace('width=100', 'width=600');
+  }
+</script>

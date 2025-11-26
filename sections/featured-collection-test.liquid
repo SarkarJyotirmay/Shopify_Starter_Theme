@@ -18,7 +18,8 @@
       {% if section.settings.featured_collection.products != blank %}
         {% for product in section.settings.featured_collection.products %}
           <li class="fc-card" role="listitem">
-            <div class="fc-media">
+            <a href="{{product.url}}">
+              <div class="fc-media">
               <img src={{product.featured_image |  image_url: width: 400 }} alt="{{product.title}}">
             </div>
 
@@ -33,6 +34,7 @@
                 <a class="fc-add" aria-label="Add Product name 3 to cart" href="{{product.url}}">View Product</a>
               </div>
             </div>
+            </a>
           </li>
         {% endfor %}
       {% else %}
